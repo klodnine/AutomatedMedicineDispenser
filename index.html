@@ -371,6 +371,16 @@
             gap: 20px;
         }
 
+        .time-input-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+        }
+
+        .time-select {
+            padding: 12px 8px;
+        }
+
         .calendar-input {
             background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
             border-radius: 12px;
@@ -688,7 +698,34 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Time</label>
-                                <input type="time" class="form-control" id="medicineTime" required>
+                                <div class="time-input-group">
+                                    <select class="form-select time-select" id="medicineHour" required>
+                                        <option value="">Hour</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                        <option value="11">11</option>
+                                        <option value="12">12</option>
+                                    </select>
+                                    <select class="form-select time-select" id="medicineMinute" required>
+                                        <option value="">Min</option>
+                                        <option value="00">00</option>
+                                        <option value="15">15</option>
+                                        <option value="30">30</option>
+                                        <option value="45">45</option>
+                                    </select>
+                                    <select class="form-select time-select" id="medicineAMPM" required>
+                                        <option value="AM">AM</option>
+                                        <option value="PM">PM</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Intake Note</label>
@@ -726,11 +763,17 @@
         function updateDateTime() {
             const now = new Date();
             
-            // Format time
-            const hours = String(now.getHours()).padStart(2, '0');
+            // Format time in 12-hour format
+            let hours = now.getHours();
             const minutes = String(now.getMinutes()).padStart(2, '0');
             const seconds = String(now.getSeconds()).padStart(2, '0');
-            document.getElementById('currentTime').textContent = `${hours}:${minutes}:${seconds}`;
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            
+            hours = hours % 12;
+            hours = hours ? hours : 12; // the hour '0' should be '12'
+            const hoursStr = String(hours).padStart(2, '0');
+            
+            document.getElementById('currentTime').textContent = `${hoursStr}:${minutes}:${seconds} ${ampm}`;
             
             // Format date
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -980,15 +1023,25 @@
         document.getElementById('scheduleForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
+            const hour = document.getElementById('medicineHour').value;
+            const minute = document.getElementById('medicineMinute').value;
+            const ampm = document.getElementById('medicineAMPM').value;
+            
+            if (!hour || !minute) {
+                alert('Please select time');
+                return;
+            }
+            
             const schedule = {
                 medicine: document.getElementById('medicineName').value,
                 date: document.getElementById('medicineDate').value,
-                time: document.getElementById('medicineTime').value,
+                time: `${hour}:${minute} ${ampm}`,
                 note: document.getElementById('intakeNote').value
             };
 
             schedules.push(schedule);
             renderSchedules();
+            renderCalendar(); // Update calendar to show schedule indicator
 
             // TODO: Send to PHP backend to save in MySQL database
             /*
@@ -1002,6 +1055,7 @@
                 if (data.success) {
                     schedules.push(schedule);
                     renderSchedules();
+                    renderCalendar();
                 }
             });
             */
