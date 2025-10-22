@@ -6,58 +6,96 @@
     <title>IoT Medicine Dispenser Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container-fluid dashboard-container">
-        <!-- Header -->
-        <header class="dashboard-header">
-            <div class="header-content">
-                <h1><i class="bi bi-capsule"></i> Medicine Dispenser Dashboard</h1>
-                <div class="header-status">
-                    <span class="badge bg-success"><i class="bi bi-wifi"></i> Connected</span>
+    <div class="dashboard-wrapper">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="bi bi-capsule-pill"></i>
+                    <span>MediDispense</span>
                 </div>
             </div>
-        </header>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active">
+                    <i class="bi bi-speedometer2"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="bi bi-calendar-check"></i>
+                    <span>Schedule</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="bi bi-graph-up"></i>
+                    <span>Analytics</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="bi bi-gear"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+        </aside>
 
-        <!-- Main Dashboard -->
-        <main class="dashboard-main">
-            <!-- Section 1: Date and Time Display -->
-            <section class="dashboard-section date-time-section">
-                <div class="section-card">
-                    <div class="date-time-display">
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <h1>Medicine Dispenser</h1>
+                    <p class="header-subtitle">Real-time monitoring and scheduling</p>
+                </div>
+                <div class="header-right">
+                    <div class="status-badge">
+                        <span class="status-dot"></span>
+                        <span class="status-text">System Active</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Grid -->
+            <main class="dashboard-grid">
+                <!-- Date & Time Card -->
+                <div class="dashboard-card date-time-card">
+                    <div class="card-content">
                         <div class="time-display" id="timeDisplay">00:00:00</div>
                         <div class="date-display" id="dateDisplay">Loading...</div>
                     </div>
                 </div>
-            </section>
 
-            <!-- Section 2: Live Temperature -->
-            <section class="dashboard-section temperature-section">
-                <div class="section-card">
-                    <div class="section-header">
-                        <h2><i class="bi bi-thermometer-half"></i> Temperature Monitor</h2>
-                        <span class="last-updated" id="tempUpdated">Last updated: --:--</span>
+                <!-- Temperature Card -->
+                <div class="dashboard-card temperature-card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="bi bi-thermometer-half"></i>
+                            <span>Temperature</span>
+                        </div>
+                        <span class="last-updated" id="tempUpdated">--:--</span>
                     </div>
-                    <div class="temperature-display">
+                    <div class="card-body">
                         <div class="temp-value" id="tempValue">--°C</div>
-                        <div class="temp-status" id="tempStatus">Connecting to sensor...</div>
-                    </div>
-                    <div class="temp-chart">
-                        <canvas id="tempChart"></canvas>
+                        <div class="temp-status" id="tempStatus">Connecting...</div>
+                        <div class="temp-chart">
+                            <canvas id="tempChart"></canvas>
+                        </div>
                     </div>
                 </div>
-            </section>
 
-            <!-- Section 3: Medicine Stock Monitoring -->
-            <section class="dashboard-section stock-section">
-                <div class="section-card">
-                    <div class="section-header">
-                        <h2><i class="bi bi-box-seam"></i> Medicine Stock Level</h2>
-                        <span class="last-updated" id="stockUpdated">Last updated: --:--</span>
+                <!-- Stock Level Card -->
+                <div class="dashboard-card stock-card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="bi bi-box-seam"></i>
+                            <span>Stock Level</span>
+                        </div>
+                        <span class="last-updated" id="stockUpdated">--:--</span>
                     </div>
-                    <div class="stock-display">
-                        <div class="stock-indicator" id="stockIndicator">
+                    <div class="card-body">
+                        <div class="stock-display">
                             <div class="stock-bar">
                                 <div class="stock-fill" id="stockFill" style="width: 0%"></div>
                             </div>
@@ -65,69 +103,69 @@
                         </div>
                         <div class="stock-details">
                             <div class="detail-item">
-                                <span class="detail-label">Slots Detected:</span>
+                                <span class="detail-label">Detected</span>
                                 <span class="detail-value" id="slotsDetected">0</span>
                             </div>
                             <div class="detail-item">
-                                <span class="detail-label">Total Capacity:</span>
+                                <span class="detail-label">Capacity</span>
                                 <span class="detail-value">10</span>
                             </div>
                         </div>
                     </div>
                 </div>
-            </section>
 
-            <!-- Section 4: Calendar and Reminder Scheduler -->
-            <section class="dashboard-section scheduler-section">
-                <div class="section-card">
-                    <div class="section-header">
-                        <h2><i class="bi bi-calendar-event"></i> Medicine Schedule</h2>
+                <!-- Scheduler Card -->
+                <div class="dashboard-card scheduler-card full-width">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="bi bi-calendar-event"></i>
+                            <span>Medicine Schedule</span>
+                        </div>
                     </div>
-                    
-                    <!-- Add New Reminder Form -->
-                    <div class="reminder-form">
-                        <h3>Add New Reminder</h3>
-                        <form id="reminderForm">
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="medicineName" class="form-label">Medicine Name</label>
-                                    <input type="text" class="form-control" id="medicineName" placeholder="e.g., Metformin" required>
+                    <div class="card-body">
+                        <!-- Add Reminder Form -->
+                        <div class="reminder-form-section">
+                            <h3>Add New Reminder</h3>
+                            <form id="reminderForm" class="reminder-form">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="medicineName">Medicine Name</label>
+                                        <input type="text" class="form-control" id="medicineName" placeholder="e.g., Metformin" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="medicineDate">Date</label>
+                                        <input type="date" class="form-control" id="medicineDate" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="medicineTime">Time</label>
+                                        <input type="time" class="form-control" id="medicineTime" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="medicineNote">Note</label>
+                                        <input type="text" class="form-control" id="medicineNote" placeholder="e.g., after dinner">
+                                    </div>
+                                    <button type="submit" class="btn-add">
+                                        <i class="bi bi-plus-circle"></i> Add
+                                    </button>
                                 </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="medicineDate" class="form-label">Date</label>
-                                    <input type="date" class="form-control" id="medicineDate" required>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="medicineTime" class="form-label">Time</label>
-                                    <input type="time" class="form-control" id="medicineTime" required>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="medicineNote" class="form-label">Intake Note</label>
-                                    <input type="text" class="form-control" id="medicineNote" placeholder="e.g., after dinner">
-                                </div>
-                            </div>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-plus-circle"></i> Add Reminder
-                            </button>
-                        </form>
-                    </div>
+                            </form>
+                        </div>
 
-                    <!-- Scheduled Reminders List -->
-                    <div class="reminders-list">
-                        <h3>Upcoming Reminders</h3>
-                        <div id="remindersList" class="reminders-container">
-                            <p class="text-muted">No reminders scheduled yet.</p>
+                        <!-- Reminders List -->
+                        <div class="reminders-section">
+                            <h3>Upcoming Reminders</h3>
+                            <div id="remindersList" class="reminders-container">
+                                <p class="empty-state">No reminders scheduled yet.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </section>
-        </main>
-
-        <!-- Notification Area -->
-        <div id="notificationArea" class="notification-area"></div>
+            </main>
+        </div>
     </div>
+
+    <!-- Notification Area -->
+    <div id="notificationArea" class="notification-area"></div>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
