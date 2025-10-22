@@ -216,6 +216,129 @@ function displayReminders() {
     .join("")
 }
 
+const currentDate = new Date()
+let selectedDate = null
+
+function renderCalendar() {
+  const year = currentDate.getFullYear()
+  const month = currentDate.getMonth()
+
+  // Update header
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ]
+  document.getElementById("calendarMonth").textContent = `${monthNames[month]} ${year}`
+
+  // Get first day of month and number of days
+  const firstDay = new Date(year, month, 1).getDay()
+  const daysInMonth = new Date(year, month + 1, 0).getDate()
+  const daysInPrevMonth = new Date(year, month, 0).getDate()
+
+  const calendarGrid = document.getElementById("calendarGrid")
+  calendarGrid.innerHTML = ""
+
+  // Previous month's days
+  for (let i = firstDay - 1; i >= 0; i--) {
+    const day = daysInPrevMonth - i
+    const dayEl = createDayElement(day, true, new Date(year, month - 1, day))
+    calendarGrid.appendChild(dayEl)
+  }
+
+  // Current month's days
+  const today = new Date()
+  for (let day = 1; day <= daysInMonth; day++) {
+    const date = new Date(year, month, day)
+    const isToday = date.toDateString() === today.toDateString()
+    const dayEl = createDayElement(day, false, date, isToday)
+    calendarGrid.appendChild(dayEl)
+  }
+
+  // Next month's days
+  const totalCells = calendarGrid.children.length
+  const remainingCells = 42 - totalCells
+  for (let day = 1; day <= remainingCells; day++) {
+    const dayEl = createDayElement(day, true, new Date(year, month + 1, day))
+    calendarGrid.appendChild(dayEl)
+  }
+}
+
+function createDayElement(day, isOtherMonth, date, isToday = false) {
+  const dayEl = document.createElement("div")
+  dayEl.className = "calendar-day"
+  dayEl.textContent = day
+
+  if (isOtherMonth) {
+    dayEl.classList.add("other-month")
+  } else {
+    dayEl.addEventListener("click", () => selectDate(date))
+
+    if (isToday) {
+      dayEl.classList.add("today")
+    }
+
+    // Check if date has reminders
+    const dateStr = date.toISOString().split("T")[0]
+    if (reminders.some((r) => r.date === dateStr)) {
+      dayEl.classList.add("has-reminder")
+    }
+  }
+
+  return dayEl
+}
+
+function selectDate(date) {
+  selectedDate = date
+  const dateStr = date.toISOString().split("T")[0]
+  const options = { weekday: "long", year: "numeric", month: "long", day: "numeric" }
+  const dateDisplay = date.toLocaleDateString("en-US", options)
+
+  document.getElementById("selectedDateDisplay").textContent = dateDisplay
+  document.getElementById("medicineDate").value = dateStr
+  document.getElementById("reminderFormSection").style.display = "block"
+
+  // Scroll to form
+  document.getElementById("reminderFormSection").scrollIntoView({ behavior: "smooth" })
+
+  // Update calendar highlighting
+  renderCalendar()
+  const dayElements = document.querySelectorAll(".calendar-day")
+  dayElements.forEach((el) => {
+    if (el.textContent == date.getDate() && !el.classList.contains("other-month")) {
+      el.classList.add("selected")
+    }
+  })
+}
+
+// Calendar navigation
+document.getElementById("prevMonth").addEventListener("click", () => {
+  currentDate.setMonth(currentDate.getMonth() - 1)
+  renderCalendar()
+})
+
+document.getElementById("nextMonth").addEventListener("click", () => {
+  currentDate.setMonth(currentDate.getMonth() + 1)
+  renderCalendar()
+})
+
+// Cancel button
+document.getElementById("cancelBtn").addEventListener("click", () => {
+  selectedDate = null
+  document.getElementById("reminderFormSection").style.display = "none"
+  document.getElementById("reminderForm").reset()
+  renderCalendar()
+})
+
 // Add new reminder
 document.getElementById("reminderForm").addEventListener("submit", async (e) => {
   e.preventDefault()
@@ -237,7 +360,10 @@ document.getElementById("reminderForm").addEventListener("submit", async (e) => 
     if (data.success) {
       showNotification("Reminder added successfully!", "success")
       document.getElementById("reminderForm").reset()
+      document.getElementById("reminderFormSection").style.display = "none"
+      selectedDate = null
       loadReminders()
+      renderCalendar()
     } else {
       showNotification("Error adding reminder: " + data.message, "danger")
     }
@@ -263,6 +389,7 @@ function deleteReminder(id) {
 
 // Initialize on page load
 document.addEventListener("DOMContentLoaded", () => {
+  renderCalendar()
   initTemperatureChart()
   loadReminders()
 

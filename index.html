@@ -123,18 +123,37 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <!-- Add Reminder Form -->
-                        <div class="reminder-form-section">
-                            <h3>Add New Reminder</h3>
+                        <div class="calendar-section">
+                            <div class="calendar-header">
+                                <button class="calendar-nav-btn" id="prevMonth">
+                                    <i class="bi bi-chevron-left"></i>
+                                </button>
+                                <h3 id="calendarMonth">January 2024</h3>
+                                <button class="calendar-nav-btn" id="nextMonth">
+                                    <i class="bi bi-chevron-right"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="calendar-weekdays">
+                                <div class="weekday">Sun</div>
+                                <div class="weekday">Mon</div>
+                                <div class="weekday">Tue</div>
+                                <div class="weekday">Wed</div>
+                                <div class="weekday">Thu</div>
+                                <div class="weekday">Fri</div>
+                                <div class="weekday">Sat</div>
+                            </div>
+                            
+                            <div class="calendar-grid" id="calendarGrid"></div>
+                        </div>
+
+                        <div class="reminder-form-section" id="reminderFormSection" style="display: none;">
+                            <h3>Add Reminder for <span id="selectedDateDisplay"></span></h3>
                             <form id="reminderForm" class="reminder-form">
                                 <div class="form-row">
                                     <div class="form-group">
                                         <label for="medicineName">Medicine Name</label>
                                         <input type="text" class="form-control" id="medicineName" placeholder="e.g., Metformin" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="medicineDate">Date</label>
-                                        <input type="date" class="form-control" id="medicineDate" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="medicineTime">Time</label>
@@ -146,6 +165,9 @@
                                     </div>
                                     <button type="submit" class="btn-add">
                                         <i class="bi bi-plus-circle"></i> Add
+                                    </button>
+                                    <button type="button" class="btn-cancel" id="cancelBtn">
+                                        <i class="bi bi-x-circle"></i> Cancel
                                     </button>
                                 </div>
                             </form>
