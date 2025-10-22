@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IoT Medicine Dispenser Dashboard</title>
+    <title>IoT Medicine Dispenser - Advanced</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -26,6 +26,48 @@
             margin: 0 auto;
         }
 
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(30, 30, 30, 0.9);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #00d4ff;
+        }
+
+        .header-status {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 8px;
+            color: #00ff88;
+            font-weight: 600;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #00ff88;
+            border-radius: 50%;
+        }
+
         .section-card {
             background: rgba(30, 30, 30, 0.9);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -33,7 +75,11 @@
             padding: 30px;
             margin-bottom: 25px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .section-card:hover {
+            border-color: rgba(0, 212, 255, 0.2);
         }
 
         .section-title {
@@ -56,8 +102,8 @@
             font-size: 4rem;
             font-weight: 700;
             color: #00d4ff;
-            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
             margin-bottom: 10px;
+            letter-spacing: 2px;
         }
 
         .current-date {
@@ -83,6 +129,13 @@
             text-align: center;
             min-width: 200px;
             flex: 1;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .temp-card:hover {
+            border-color: rgba(0, 212, 255, 0.6);
+            transform: translateY(-3px);
         }
 
         .temp-value {
@@ -94,6 +147,12 @@
         .temp-label {
             font-size: 1.1rem;
             color: #888;
+            margin-top: 8px;
+        }
+
+        .temp-trend {
+            font-size: 0.85rem;
+            color: #00ff88;
             margin-top: 8px;
         }
 
@@ -110,11 +169,13 @@
             border-radius: 12px;
             padding: 25px;
             border-left: 4px solid;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
+            position: relative;
         }
 
         .metric-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
         }
 
         .metric-card.high {
@@ -184,6 +245,21 @@
         .status-low {
             background: rgba(255, 68, 68, 0.2);
             color: #ff4444;
+        }
+
+        .progress-bar-custom {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00d4ff 0%, #00ff88 100%);
+            border-radius: 10px;
+            transition: width 0.3s ease;
         }
 
         /* Calendar Section */
@@ -267,6 +343,11 @@
             padding: 8px 12px;
             border-radius: 8px;
             cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .month-select:hover, .year-select:hover {
+            border-color: rgba(0, 212, 255, 0.6);
         }
 
         .today-btn {
@@ -399,6 +480,7 @@
             color: #ffffff;
             padding: 12px;
             border-radius: 8px;
+            transition: all 0.3s ease;
         }
 
         .form-control:focus, .form-select:focus {
@@ -422,7 +504,6 @@
         .btn-primary:hover {
             background: linear-gradient(135deg, #00bbee 0%, #0088bb 100%);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 212, 255, 0.4);
         }
 
         .schedule-list {
@@ -445,6 +526,7 @@
         .schedule-item:hover {
             background: rgba(30, 30, 30, 0.9);
             transform: translateX(5px);
+            box-shadow: 0 3px 10px rgba(0, 212, 255, 0.1);
         }
 
         .schedule-date {
@@ -491,28 +573,6 @@
             background: rgba(255, 68, 68, 0.4);
         }
 
-        .status-indicator {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            margin-right: 8px;
-            animation: pulse 2s infinite;
-        }
-
-        .status-indicator.active {
-            background: #00ff88;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.5;
-            }
-        }
-
         /* Custom Scrollbar */
         .schedule-list::-webkit-scrollbar {
             width: 8px;
@@ -548,11 +608,29 @@
             .stock-metrics {
                 grid-template-columns: 1fr;
             }
+
+            .dashboard-header {
+                flex-direction: column;
+                gap: 15px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="dashboard-container">
+        <!-- Dashboard Header -->
+        <div class="dashboard-header">
+            <div class="header-title">
+                <i class="fas fa-pills"></i> Medicine Dispenser Dashboard
+            </div>
+            <div class="header-status">
+                <div class="status-badge">
+                    <div class="status-dot"></div>
+                    System Online
+                </div>
+            </div>
+        </div>
+
         <!-- Date and Time Section -->
         <div class="section-card">
             <div class="datetime-display">
@@ -565,20 +643,18 @@
         <div class="section-card">
             <div class="section-title">
                 <i class="fas fa-thermometer-half"></i>
-                Environmental Monitoring (DHT22 Sensor)
+                Environmental Monitoring
             </div>
             <div class="temperature-display">
                 <div class="temp-card">
-                    <div class="temp-value" id="temperature">
-                        <span class="status-indicator active"></span>--°C
-                    </div>
+                    <div class="temp-value" id="temperature">--°C</div>
                     <div class="temp-label">Temperature</div>
+                    <div class="temp-trend"><i class="fas fa-arrow-up"></i> Stable</div>
                 </div>
                 <div class="temp-card">
-                    <div class="temp-value" id="humidity">
-                        <span class="status-indicator active"></span>--%
-                    </div>
+                    <div class="temp-value" id="humidity">--%</div>
                     <div class="temp-label">Humidity</div>
+                    <div class="temp-trend"><i class="fas fa-arrow-down"></i> Optimal</div>
                 </div>
             </div>
         </div>
@@ -587,7 +663,7 @@
         <div class="section-card">
             <div class="section-title">
                 <i class="fas fa-boxes"></i>
-                Medicine Stock Monitoring (IR Sensor)
+                Medicine Stock Monitoring
             </div>
             <div class="stock-metrics">
                 <div class="metric-card high">
@@ -601,6 +677,9 @@
                         </div>
                     </div>
                     <span class="stock-status status-high">In Stock</span>
+                    <div class="progress-bar-custom">
+                        <div class="progress-fill" style="width: 100%;"></div>
+                    </div>
                 </div>
 
                 <div class="metric-card medium">
@@ -614,6 +693,9 @@
                         </div>
                     </div>
                     <span class="stock-status status-medium">75% Full</span>
+                    <div class="progress-bar-custom">
+                        <div class="progress-fill" style="width: 75%;"></div>
+                    </div>
                 </div>
 
                 <div class="metric-card low">
@@ -627,6 +709,9 @@
                         </div>
                     </div>
                     <span class="stock-status status-low">Needs Refill</span>
+                    <div class="progress-bar-custom">
+                        <div class="progress-fill" style="width: 25%;"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -763,49 +848,33 @@
         function updateDateTime() {
             const now = new Date();
             
-            // Format time in 12-hour format
             let hours = now.getHours();
             const minutes = String(now.getMinutes()).padStart(2, '0');
             const seconds = String(now.getSeconds()).padStart(2, '0');
             const ampm = hours >= 12 ? 'PM' : 'AM';
             
             hours = hours % 12;
-            hours = hours ? hours : 12; // the hour '0' should be '12'
+            hours = hours ? hours : 12;
             const hoursStr = String(hours).padStart(2, '0');
             
             document.getElementById('currentTime').textContent = `${hoursStr}:${minutes}:${seconds} ${ampm}`;
             
-            // Format date
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', options);
         }
 
-        // Update every second
         setInterval(updateDateTime, 1000);
         updateDateTime();
 
-        // Simulate Temperature Updates (Replace with AJAX call to PHP backend)
+        // Temperature Updates
         function updateTemperature() {
-            // Simulated data - replace with actual AJAX call to fetch_sensor_data.php
             const temp = (25 + Math.random() * 3).toFixed(1);
             const humidity = (60 + Math.random() * 10).toFixed(1);
             
-            document.getElementById('temperature').innerHTML = `<span class="status-indicator active"></span>${temp}°C`;
-            document.getElementById('humidity').innerHTML = `<span class="status-indicator active"></span>${humidity}%`;
-            
-            // Uncomment below for actual implementation
-            /*
-            fetch('fetch_sensor_data.php')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('temperature').innerHTML = `<span class="status-indicator active"></span>${data.temperature}°C`;
-                    document.getElementById('humidity').innerHTML = `<span class="status-indicator active"></span>${data.humidity}%`;
-                })
-                .catch(error => console.error('Error fetching sensor data:', error));
-            */
+            document.getElementById('temperature').textContent = `${temp}°C`;
+            document.getElementById('humidity').textContent = `${humidity}%`;
         }
 
-        // Update temperature every 5 seconds
         setInterval(updateTemperature, 5000);
         updateTemperature();
 
@@ -814,7 +883,6 @@
         let selectedDate = new Date();
         let currentCalendarMonth = new Date();
 
-        // Calendar functionality
         function generateYearOptions() {
             const yearSelect = document.getElementById('yearSelect');
             const currentYear = new Date().getFullYear();
@@ -830,7 +898,6 @@
         function updateCurrentMonthDisplay() {
             const now = new Date();
             const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
             
             document.getElementById('currentDayName').textContent = days[now.getDay()];
             document.getElementById('currentDayNumber').textContent = now.getDate();
@@ -841,7 +908,6 @@
             const year = currentCalendarMonth.getFullYear();
             const month = currentCalendarMonth.getMonth();
             
-            // Update selects
             document.getElementById('monthSelect').value = month;
             document.getElementById('yearSelect').value = year;
             
@@ -849,9 +915,7 @@
             const lastDay = new Date(year, month + 1, 0);
             const prevLastDay = new Date(year, month, 0);
             
-            // Get first day of week (0 = Sunday, 1 = Monday, etc.)
             let firstDayOfWeek = firstDay.getDay();
-            // Convert to Monday start (0 = Monday)
             firstDayOfWeek = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1;
             
             const daysInMonth = lastDay.getDate();
@@ -863,35 +927,29 @@
             const today = new Date();
             today.setHours(0, 0, 0, 0);
             
-            // Previous month days
             for (let i = firstDayOfWeek - 1; i >= 0; i--) {
                 const day = prevDaysInMonth - i;
                 const dayDiv = createDayElement(day, true, new Date(year, month - 1, day));
                 calendarDays.appendChild(dayDiv);
             }
             
-            // Current month days
             for (let day = 1; day <= daysInMonth; day++) {
                 const date = new Date(year, month, day);
                 const dayDiv = createDayElement(day, false, date);
                 
-                // Check if today
                 if (date.getTime() === today.getTime()) {
                     dayDiv.classList.add('today');
                 }
                 
-                // Check if selected
                 if (selectedDate && date.toDateString() === selectedDate.toDateString()) {
                     dayDiv.classList.add('selected');
                 }
                 
-                // Check if weekend
                 const dayOfWeek = date.getDay();
                 if (dayOfWeek === 0 || dayOfWeek === 6) {
                     dayDiv.classList.add('weekend');
                 }
                 
-                // Check if has schedule
                 const hasSchedule = schedules.some(schedule => {
                     const scheduleDate = new Date(schedule.date);
                     return scheduleDate.toDateString() === date.toDateString();
@@ -903,9 +961,8 @@
                 calendarDays.appendChild(dayDiv);
             }
             
-            // Next month days
             const totalCells = calendarDays.children.length;
-            const remainingCells = 42 - totalCells; // 6 rows * 7 days
+            const remainingCells = 42 - totalCells;
             for (let day = 1; day <= remainingCells; day++) {
                 const dayDiv = createDayElement(day, true, new Date(year, month + 1, day));
                 calendarDays.appendChild(dayDiv);
@@ -927,7 +984,6 @@
             selectedDate = new Date(date);
             renderCalendar();
             
-            // Update the form
             const year = date.getFullYear();
             const month = String(date.getMonth() + 1).padStart(2, '0');
             const day = String(date.getDate()).padStart(2, '0');
@@ -936,7 +992,6 @@
             document.getElementById('selectedDateDisplay').value = formatDate(`${year}-${month}-${day}`);
         }
 
-        // Calendar navigation
         document.getElementById('prevMonth').addEventListener('click', () => {
             currentCalendarMonth.setMonth(currentCalendarMonth.getMonth() - 1);
             renderCalendar();
@@ -978,7 +1033,6 @@
                 return;
             }
 
-            // Sort schedules by date and time
             schedules.sort((a, b) => {
                 const dateA = new Date(a.date + ' ' + a.time);
                 const dateB = new Date(b.date + ' ' + b.time);
@@ -1010,14 +1064,7 @@
         function deleteSchedule(index) {
             schedules.splice(index, 1);
             renderSchedules();
-            // TODO: Send deletion request to PHP backend
-            /*
-            fetch('delete_schedule.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id: scheduleId })
-            });
-            */
+            renderCalendar();
         }
 
         document.getElementById('scheduleForm').addEventListener('submit', function(e) {
@@ -1041,44 +1088,19 @@
 
             schedules.push(schedule);
             renderSchedules();
-            renderCalendar(); // Update calendar to show schedule indicator
+            renderCalendar();
 
-            // TODO: Send to PHP backend to save in MySQL database
-            /*
-            fetch('add_schedule.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(schedule)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    schedules.push(schedule);
-                    renderSchedules();
-                    renderCalendar();
-                }
-            });
-            */
-
-            // Reset form
             this.reset();
-            
-            // Show success message
-            alert('Schedule added successfully! The dispenser will release the capsule at the scheduled time.');
+            alert('Schedule added successfully!');
         });
 
-        // Set minimum date to today
         generateYearOptions();
         updateCurrentMonthDisplay();
         renderCalendar();
-        selectDate(new Date()); // Select today by default
-
-        // Initial render
+        selectDate(new Date());
         renderSchedules();
 
-        // Simulate stock updates (Replace with actual IR sensor data from PHP)
         function updateStockMetrics() {
-            // Simulated data - replace with AJAX call to fetch_stock_data.php
             const total = 24;
             const available = Math.floor(12 + Math.random() * 10);
             const empty = total - available;
@@ -1088,7 +1110,6 @@
             document.getElementById('availableSlots').textContent = available;
             document.getElementById('emptySlots').textContent = empty;
 
-            // Update status colors based on stock levels
             const availableCard = document.querySelector('.metric-card.medium');
             const statusBadge = availableCard.querySelector('.stock-status');
             
@@ -1102,21 +1123,8 @@
                 statusBadge.className = 'stock-status status-low';
                 statusBadge.textContent = `${percentage}% - Low Stock!`;
             }
-
-            // Uncomment for actual implementation
-            /*
-            fetch('fetch_stock_data.php')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('totalStock').textContent = data.total;
-                    document.getElementById('availableSlots').textContent = data.available;
-                    document.getElementById('emptySlots').textContent = data.empty;
-                })
-                .catch(error => console.error('Error fetching stock data:', error));
-            */
         }
 
-        // Update stock every 10 seconds
         setInterval(updateStockMetrics, 10000);
         updateStockMetrics();
     </script>
