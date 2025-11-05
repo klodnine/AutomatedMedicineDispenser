@@ -452,10 +452,15 @@
             gap: 20px;
         }
 
+        /* Updated time input to use dropdowns for 12-hour format */
         .time-input-group {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
             gap: 10px;
+        }
+
+        .time-input-group select {
+            padding: 12px 8px;
         }
 
         .time-select {
@@ -529,6 +534,12 @@
             box-shadow: 0 3px 10px rgba(0, 212, 255, 0.1);
         }
 
+        /* Added styles for upcoming reminder notification */
+        .schedule-item.upcoming-reminder {
+            border-left-color: #ffd700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+
         .schedule-date {
             font-size: 1.1rem;
             color: #00d4ff;
@@ -573,6 +584,57 @@
             background: rgba(255, 68, 68, 0.4);
         }
 
+        /* Added notification toast styles */
+        .notification-toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #ffd700 0%, #ff9500 100%);
+            color: #000;
+            padding: 20px 25px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            animation: slideIn 0.3s ease;
+            max-width: 400px;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(500px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(500px);
+                opacity: 0;
+            }
+        }
+
+        .notification-toast.removing {
+            animation: slideOut 0.3s ease;
+        }
+
+        .notification-toast-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .notification-toast-message {
+            font-size: 0.95rem;
+        }
+
         /* Custom Scrollbar */
         .schedule-list::-webkit-scrollbar {
             width: 8px;
@@ -590,6 +652,251 @@
 
         .schedule-list::-webkit-scrollbar-thumb:hover {
             background: rgba(0, 212, 255, 0.7);
+        }
+
+        /* Added styles for reminder modal and ultrasonic sensor display */
+        .reminder-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            animation: fadeIn 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .reminder-modal-content {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border: 3px solid #ffd700;
+            border-radius: 25px;
+            padding: 50px;
+            max-width: 600px;
+            width: 90%;
+            box-shadow: 0 0 60px rgba(255, 215, 0, 0.5), 0 20px 60px rgba(0, 0, 0, 0.8);
+            animation: slideUp 0.4s ease, pulse-border 2s infinite;
+            position: relative;
+        }
+
+        @keyframes pulse-border {
+            0%, 100% {
+                box-shadow: 0 0 60px rgba(255, 215, 0, 0.5), 0 20px 60px rgba(0, 0, 0, 0.8);
+            }
+            50% {
+                box-shadow: 0 0 80px rgba(255, 215, 0, 0.8), 0 20px 60px rgba(0, 0, 0, 0.8);
+            }
+        }
+
+        .reminder-modal-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            padding-bottom: 25px;
+            border-bottom: 3px solid rgba(255, 215, 0, 0.5);
+        }
+
+        .reminder-modal-icon {
+            font-size: 3.5rem;
+            color: #ffd700;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        .reminder-modal-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #ffd700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .reminder-modal-body {
+            margin-bottom: 30px;
+        }
+
+        .reminder-detail {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 18px;
+            padding: 15px;
+            background: rgba(0, 212, 255, 0.15);
+            border-radius: 10px;
+            border-left: 4px solid #00d4ff;
+            transition: all 0.3s ease;
+        }
+
+        .reminder-detail:hover {
+            background: rgba(0, 212, 255, 0.25);
+            transform: translateX(5px);
+        }
+
+        .reminder-detail-icon {
+            font-size: 1.5rem;
+            color: #00d4ff;
+            min-width: 30px;
+        }
+
+        .reminder-detail-text {
+            font-size: 1.2rem;
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .reminder-detail-label {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 3px;
+        }
+
+        .ultrasonic-status {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            background: rgba(0, 255, 136, 0.15);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 2px solid rgba(0, 255, 136, 0.4);
+        }
+
+        .ultrasonic-indicator {
+            width: 14px;
+            height: 14px;
+            background: #00ff88;
+            border-radius: 50%;
+            animation: pulse 1s infinite;
+            box-shadow: 0 0 10px #00ff88;
+        }
+
+        .ultrasonic-text {
+            color: #00ff88;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        /* Enhanced countdown timer styling */
+        .reminder-countdown {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(255, 215, 0, 0.05) 100%);
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border: 2px solid rgba(255, 215, 0, 0.4);
+        }
+
+        .reminder-countdown-text {
+            color: #ffd700;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .reminder-countdown-timer {
+            font-size: 1.8rem;
+            color: #00d4ff;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+        }
+
+        .reminder-modal-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .reminder-btn-confirm {
+            background: linear-gradient(135deg, #00ff88 0%, #00cc66 100%);
+            border: none;
+            color: #000;
+            padding: 18px 25px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .reminder-btn-confirm:hover {
+            background: linear-gradient(135deg, #00ee77 0%, #00bb55 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0, 255, 136, 0.5);
+        }
+
+        .reminder-btn-confirm:active {
+            transform: translateY(-1px);
+        }
+
+        .reminder-btn-dismiss {
+            background: rgba(255, 68, 68, 0.25);
+            border: 2px solid #ff4444;
+            color: #ff4444;
+            padding: 18px 25px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .reminder-btn-dismiss:hover {
+            background: rgba(255, 68, 68, 0.4);
+            transform: translateY(-3px);
+        }
+
+        .reminder-btn-dismiss:active {
+            transform: translateY(-1px);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
         }
 
         @media (max-width: 768px) {
@@ -613,6 +920,12 @@
                 flex-direction: column;
                 gap: 15px;
             }
+
+            .notification-toast {
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
         }
     </style>
 </head>
@@ -634,7 +947,7 @@
         <!-- Date and Time Section -->
         <div class="section-card">
             <div class="datetime-display">
-                <div class="current-time" id="currentTime">00:00:00</div>
+                <div class="current-time" id="currentTime">00:00:00 AM</div>
                 <div class="current-date" id="currentDate">Loading...</div>
             </div>
         </div>
@@ -716,6 +1029,63 @@
             </div>
         </div>
 
+        <!-- Added Ultrasonic Sensor Monitoring Section -->
+        <div class="section-card">
+            <div class="section-title">
+                <i class="fas fa-wave-square"></i>
+                Ultrasonic Sensor & Capsule Detection
+            </div>
+            <div class="stock-metrics">
+                <div class="metric-card high">
+                    <div class="metric-header">
+                        <div>
+                            <div class="metric-value" id="ultrasonicDistance">--</div>
+                            <div class="metric-label">Distance (cm)</div>
+                        </div>
+                        <div class="metric-icon">
+                            <i class="fas fa-wave-square"></i>
+                        </div>
+                    </div>
+                    <span class="stock-status status-high" id="capsuleStatus">Capsule Detected</span>
+                    <div class="progress-bar-custom">
+                        <div class="progress-fill" id="distanceBar" style="width: 100%;"></div>
+                    </div>
+                </div>
+
+                <div class="metric-card medium">
+                    <div class="metric-header">
+                        <div>
+                            <div class="metric-value" id="sensorHealth">98%</div>
+                            <div class="metric-label">Sensor Health</div>
+                        </div>
+                        <div class="metric-icon">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                    </div>
+                    <span class="stock-status status-high">Operational</span>
+                    <div class="progress-bar-custom">
+                        <div class="progress-fill" style="width: 98%;"></div>
+                    </div>
+                </div>
+
+                <div class="metric-card low">
+                    <div class="metric-header">
+                        <div>
+                            <div class="metric-value" id="lastDetection">--:--</div>
+                            <div class="metric-label">Last Detection</div>
+                        </div>
+                        <div class="metric-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                    </div>
+                    <span class="stock-status status-medium" id="detectionStatus">Waiting</span>
+                    <div class="progress-bar-custom">
+                        <div class="progress-fill" style="width: 50%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Calendar and Scheduler Section -->
         <div class="section-card">
             <div class="section-title">
@@ -781,49 +1151,107 @@
                                 <input type="text" class="form-control" id="selectedDateDisplay" readonly>
                                 <input type="hidden" id="medicineDate">
                             </div>
+                            <!-- Replaced with 12-hour format dropdowns and AM/PM selector -->
                             <div class="mb-3">
-                                <label class="form-label">Time</label>
+                                <label class="form-label">Time (12-hour format)</label>
                                 <div class="time-input-group">
-                                    <select class="form-select time-select" id="medicineHour" required>
-                                        <option value="">Hour</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                        <option value="6">6</option>
-                                        <option value="7">7</option>
-                                        <option value="8">8</option>
-                                        <option value="9">9</option>
-                                        <option value="10">10</option>
-                                        <option value="11">11</option>
-                                        <option value="12">12</option>
-                                    </select>
-                                    <select class="form-select time-select" id="medicineMinute" required>
-                                        <option value="">Min</option>
-                                        <option value="00">00</option>
-                                        <option value="15">15</option>
-                                        <option value="30">30</option>
-                                        <option value="45">45</option>
-                                    </select>
-                                    <select class="form-select time-select" id="medicineAMPM" required>
-                                        <option value="AM">AM</option>
-                                        <option value="PM">PM</option>
-                                    </select>
+                                    <div>
+                                        <label style="color: #888; font-size: 0.85rem;">Hour</label>
+                                        <select class="form-select" id="medicineHour" required>
+                                            <option value="">Select Hour</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                            <option value="11">11</option>
+                                            <option value="12">12</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label style="color: #888; font-size: 0.85rem;">Minute</label>
+                                        <select class="form-select" id="medicineMinute" required>
+                                            <option value="">Select Minute</option>
+                                            <option value="00">00</option>
+                                            <option value="01">01</option>
+                                            <option value="02">02</option>
+                                            <option value="03">03</option>
+                                            <option value="04">04</option>
+                                            <option value="05">05</option>
+                                            <option value="06">06</option>
+                                            <option value="07">07</option>
+                                            <option value="08">08</option>
+                                            <option value="09">09</option>
+                                            <option value="10">10</option>
+                                            <option value="11">11</option>
+                                            <option value="12">12</option>
+                                            <option value="13">13</option>
+                                            <option value="14">14</option>
+                                            <option value="15">15</option>
+                                            <option value="16">16</option>
+                                            <option value="17">17</option>
+                                            <option value="18">18</option>
+                                            <option value="19">19</option>
+                                            <option value="20">20</option>
+                                            <option value="21">21</option>
+                                            <option value="22">22</option>
+                                            <option value="23">23</option>
+                                            <option value="24">24</option>
+                                            <option value="25">25</option>
+                                            <option value="26">26</option>
+                                            <option value="27">27</option>
+                                            <option value="28">28</option>
+                                            <option value="29">29</option>
+                                            <option value="30">30</option>
+                                            <option value="31">31</option>
+                                            <option value="32">32</option>
+                                            <option value="33">33</option>
+                                            <option value="34">34</option>
+                                            <option value="35">35</option>
+                                            <option value="36">36</option>
+                                            <option value="37">37</option>
+                                            <option value="38">38</option>
+                                            <option value="39">39</option>
+                                            <option value="40">40</option>
+                                            <option value="41">41</option>
+                                            <option value="42">42</option>
+                                            <option value="43">43</option>
+                                            <option value="44">44</option>
+                                            <option value="45">45</option>
+                                            <option value="46">46</option>
+                                            <option value="47">47</option>
+                                            <option value="48">48</option>
+                                            <option value="49">49</option>
+                                            <option value="50">50</option>
+                                            <option value="51">51</option>
+                                            <option value="52">52</option>
+                                            <option value="53">53</option>
+                                            <option value="54">54</option>
+                                            <option value="55">55</option>
+                                            <option value="56">56</option>
+                                            <option value="57">57</option>
+                                            <option value="58">58</option>
+                                            <option value="59">59</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label style="color: #888; font-size: 0.85rem;">AM/PM</label>
+                                        <select class="form-select" id="medicineAmPm" required>
+                                            <option value="">Select</option>
+                                            <option value="AM">AM</option>
+                                            <option value="PM">PM</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Intake Note</label>
-                                <select class="form-select" id="intakeNote">
-                                    <option value="After breakfast">After breakfast</option>
-                                    <option value="After lunch">After lunch</option>
-                                    <option value="After dinner">After dinner</option>
-                                    <option value="30 minutes before breakfast">30 minutes before breakfast</option>
-                                    <option value="30 minutes before lunch">30 minutes before lunch</option>
-                                    <option value="30 minutes before dinner">30 minutes before dinner</option>
-                                    <option value="Before bedtime">Before bedtime</option>
-                                    <option value="On empty stomach">On empty stomach</option>
-                                </select>
+                                <input type="text" class="form-control" id="intakeNote" placeholder="e.g., After breakfast, with water, etc." required>
                             </div>
                             <button type="submit" class="btn btn-primary">
                                 <i class="fas fa-plus-circle"></i> Add Schedule
@@ -838,6 +1266,57 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enhanced reminder modal with countdown timer -->
+    <div id="reminderModal" class="reminder-modal" style="display: none;">
+        <div class="reminder-modal-content">
+            <div class="reminder-modal-header">
+                <div class="reminder-modal-icon">
+                    <i class="fas fa-bell"></i>
+                </div>
+                <div class="reminder-modal-title">🔔 MEDICINE REMINDER!</div>
+            </div>
+            <div class="reminder-modal-body">
+                <div class="reminder-detail">
+                    <div class="reminder-detail-icon"><i class="fas fa-pills"></i></div>
+                    <div>
+                        <div class="reminder-detail-label">Medicine Name</div>
+                        <div class="reminder-detail-text" id="reminderMedicineName">--</div>
+                    </div>
+                </div>
+                <div class="reminder-detail">
+                    <div class="reminder-detail-icon"><i class="fas fa-clock"></i></div>
+                    <div>
+                        <div class="reminder-detail-label">Scheduled Time</div>
+                        <div class="reminder-detail-text" id="reminderTime">--:-- --</div>
+                    </div>
+                </div>
+                <div class="reminder-detail">
+                    <div class="reminder-detail-icon"><i class="fas fa-sticky-note"></i></div>
+                    <div>
+                        <div class="reminder-detail-label">Intake Instructions</div>
+                        <div class="reminder-detail-text" id="reminderNote">--</div>
+                    </div>
+                </div>
+                <div class="ultrasonic-status">
+                    <div class="ultrasonic-indicator"></div>
+                    <div class="ultrasonic-text">✓ Capsule detected in dispenser</div>
+                </div>
+                <div class="reminder-countdown">
+                    <div class="reminder-countdown-text" id="reminderCountdown">Next reminder in:</div>
+                    <div class="reminder-countdown-timer" id="reminderTimer">5:00</div>
+                </div>
+            </div>
+            <div class="reminder-modal-actions">
+                <button class="reminder-btn-confirm" onclick="confirmMedicineTaken()">
+                    <i class="fas fa-check-circle"></i> Taken
+                </button>
+                <button class="reminder-btn-dismiss" onclick="dismissReminder()">
+                    <i class="fas fa-times-circle"></i> Dismiss
+                </button>
             </div>
         </div>
     </div>
@@ -882,6 +1361,8 @@
         const schedules = [];
         let selectedDate = new Date();
         let currentCalendarMonth = new Date();
+
+        const reminderTracking = {};
 
         function generateYearOptions() {
             const yearSelect = document.getElementById('yearSelect');
@@ -1025,6 +1506,107 @@
             return date.toLocaleDateString('en-US', options);
         }
 
+        function showNotification(medicineName, time, note) {
+            const container = document.body;
+            const reminder = document.createElement('div');
+            reminder.className = 'floating-reminder';
+            reminder.innerHTML = `
+                <div class="floating-reminder-header">
+                    <i class="fas fa-bell floating-reminder-icon"></i>
+                    Medicine Reminder!
+                </div>
+                <div class="floating-reminder-medicine">
+                    <i class="fas fa-pills"></i> ${medicineName}
+                </div>
+                <div class="floating-reminder-time">
+                    <i class="fas fa-clock"></i> Time: ${time}
+                </div>
+                <div class="floating-reminder-note">
+                    <i class="fas fa-info-circle"></i> ${note}
+                </div>
+                <div class="floating-reminder-actions">
+                    <button class="reminder-btn reminder-btn-confirm" onclick="this.closest('.floating-reminder').remove()">
+                        <i class="fas fa-check"></i> Mark as Taken
+                    </button>
+                    <button class="reminder-btn reminder-btn-dismiss" onclick="this.closest('.floating-reminder').remove()">
+                        <i class="fas fa-times"></i> Dismiss
+                    </button>
+                </div>
+            `;
+            container.appendChild(reminder);
+
+            // Browser notification if permitted
+            if ('Notification' in window && Notification.permission === 'granted') {
+                new Notification('Medicine Reminder', {
+                    body: `Time to take ${medicineName} at ${time} - ${note}`,
+                    icon: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/svgs/solid/pills.svg',
+                    tag: 'medicine-reminder',
+                    requireInteraction: true
+                });
+            }
+
+            // Auto-dismiss after 30 seconds
+            setTimeout(() => {
+                if (reminder.parentNode) {
+                    reminder.classList.add('removing');
+                    setTimeout(() => reminder.remove(), 400);
+                }
+            }, 30000);
+        }
+
+        function checkReminders() {
+            const now = new Date();
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+            const hoursStr = String(hours).padStart(2, '0');
+            const currentTime = `${hoursStr}:${minutes} ${ampm}`;
+            const today = now.toISOString().split('T')[0];
+
+            console.log("[v0] Checking reminders - Current time:", currentTime, "Today:", today);
+
+            schedules.forEach(schedule => {
+                console.log("[v0] Comparing schedule:", schedule.date, schedule.time, "with today:", today, "currentTime:", currentTime);
+                
+                if (schedule.date === today && schedule.time === currentTime) {
+                    const reminderKey = `${schedule.medicine}-${schedule.time}`;
+                    
+                    if (!reminderTracking[reminderKey]) {
+                        console.log("[v0] Showing reminder for:", schedule.medicine);
+                        reminderTracking[reminderKey] = {
+                            initialTime: now.getTime(),
+                            reminders: [0],
+                            medicine: schedule.medicine,
+                            time: schedule.time,
+                            note: schedule.note
+                        };
+                        showReminderModal(schedule.medicine, schedule.time, schedule.note);
+                    } else {
+                        const elapsed = (now.getTime() - reminderTracking[reminderKey].initialTime) / 1000 / 60;
+                        
+                        if (elapsed >= 5 && !reminderTracking[reminderKey].reminders.includes(5)) {
+                            reminderTracking[reminderKey].reminders.push(5);
+                            showReminderModal(schedule.medicine, schedule.time, schedule.note);
+                            showNotification('Follow-up Reminder', `${schedule.medicine} - 5 minutes have passed`, 'warning');
+                        }
+                        
+                        if (elapsed >= 10 && !reminderTracking[reminderKey].reminders.includes(10)) {
+                            reminderTracking[reminderKey].reminders.push(10);
+                            showReminderModal(schedule.medicine, schedule.time, schedule.note);
+                            showNotification('Final Reminder', `${schedule.medicine} - 10 minutes have passed`, 'warning');
+                        }
+                    }
+                }
+            });
+        }
+
+        setInterval(checkReminders, 1000);
+        // Run immediately on page load
+        checkReminders();
+
         function renderSchedules() {
             const container = document.getElementById('scheduleContainer');
             
@@ -1039,26 +1621,40 @@
                 return dateA - dateB;
             });
 
-            container.innerHTML = schedules.map((schedule, index) => `
-                <div class="schedule-item">
-                    <div class="schedule-date">
-                        <i class="fas fa-calendar-day"></i>
-                        ${formatDate(schedule.date)}
+            const now = new Date();
+            const today = now.toISOString().split('T')[0];
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+            const hoursStr = String(hours).padStart(2, '0');
+            const currentTime = `${hoursStr}:${minutes} ${ampm}`;
+
+            container.innerHTML = schedules.map((schedule, index) => {
+                const isUpcoming = schedule.date === today && schedule.time === currentTime;
+                return `
+                    <div class="schedule-item ${isUpcoming ? 'upcoming-reminder' : ''}">
+                        <div class="schedule-date">
+                            <i class="fas fa-calendar-day"></i>
+                            ${formatDate(schedule.date)}
+                        </div>
+                        <div class="schedule-time">
+                            <i class="fas fa-clock"></i> ${schedule.time}
+                        </div>
+                        <div class="schedule-medicine">
+                            <i class="fas fa-pills"></i> ${schedule.medicine}
+                        </div>
+                        <div class="schedule-note">
+                            <i class="fas fa-sticky-note"></i> ${schedule.note}
+                        </div>
+                        <button class="delete-btn mt-3" onclick="deleteSchedule(${index})">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
                     </div>
-                    <div class="schedule-time">
-                        <i class="fas fa-clock"></i> ${schedule.time}
-                    </div>
-                    <div class="schedule-medicine">
-                        <i class="fas fa-pills"></i> ${schedule.medicine}
-                    </div>
-                    <div class="schedule-note">
-                        <i class="fas fa-sticky-note"></i> ${schedule.note}
-                    </div>
-                    <button class="delete-btn mt-3" onclick="deleteSchedule(${index})">
-                        <i class="fas fa-trash"></i> Delete
-                    </button>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         function deleteSchedule(index) {
@@ -1072,18 +1668,19 @@
             
             const hour = document.getElementById('medicineHour').value;
             const minute = document.getElementById('medicineMinute').value;
-            const ampm = document.getElementById('medicineAMPM').value;
+            const ampm = document.getElementById('medicineAmPm').value;
             
-            if (!hour || !minute) {
-                alert('Please select time');
+            if (!hour || !minute || !ampm) {
+                alert('Please select hour, minute, and AM/PM');
                 return;
             }
-            
+
             const schedule = {
                 medicine: document.getElementById('medicineName').value,
                 date: document.getElementById('medicineDate').value,
-                time: `${hour}:${minute} ${ampm}`,
-                note: document.getElementById('intakeNote').value
+                time: `${String(hour).padStart(2, '0')}:${minute} ${ampm}`,
+                note: document.getElementById('intakeNote').value,
+                notified: false
             };
 
             schedules.push(schedule);
@@ -1093,6 +1690,11 @@
             this.reset();
             alert('Schedule added successfully!');
         });
+
+        // Request notification permission on page load
+        if ('Notification' in window && Notification.permission === 'default') {
+            Notification.requestPermission();
+        }
 
         generateYearOptions();
         updateCurrentMonthDisplay();
@@ -1127,6 +1729,162 @@
 
         setInterval(updateStockMetrics, 10000);
         updateStockMetrics();
+
+        function updateUltrasonicSensor() {
+            const distance = (5 + Math.random() * 15).toFixed(1);
+            const isCapsuleDetected = distance < 10;
+            
+            document.getElementById('ultrasonicDistance').textContent = distance;
+            
+            const capsuleStatus = document.getElementById('capsuleStatus');
+            const distanceBar = document.getElementById('distanceBar');
+            
+            if (isCapsuleDetected) {
+                capsuleStatus.className = 'stock-status status-high';
+                capsuleStatus.textContent = 'Capsule Detected';
+                distanceBar.style.background = 'linear-gradient(90deg, #00ff88 0%, #00cc66 100%)';
+                distanceBar.style.width = ((20 - distance) / 20 * 100) + '%';
+            } else {
+                capsuleStatus.className = 'stock-status status-low';
+                capsuleStatus.textContent = 'No Capsule';
+                distanceBar.style.background = 'linear-gradient(90deg, #ff4444 0%, #cc0000 100%)';
+                distanceBar.style.width = ((20 - distance) / 20 * 100) + '%';
+            }
+
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('lastDetection').textContent = `${hours}:${minutes}`;
+            
+            const sensorHealth = (95 + Math.random() * 5).toFixed(0);
+            document.getElementById('sensorHealth').textContent = sensorHealth + '%';
+        }
+
+        setInterval(updateUltrasonicSensor, 3000);
+        updateUltrasonicSensor();
+
+        let reminderCountdownInterval = null;
+        let reminderTimeRemaining = 0;
+
+        function startReminderCountdown(initialSeconds = 300) {
+            reminderTimeRemaining = initialSeconds;
+            
+            if (reminderCountdownInterval) {
+                clearInterval(reminderCountdownInterval);
+            }
+
+            reminderCountdownInterval = setInterval(() => {
+                reminderTimeRemaining--;
+                
+                const minutes = Math.floor(reminderTimeRemaining / 60);
+                const seconds = reminderTimeRemaining % 60;
+                
+                document.getElementById('reminderTimer').textContent = 
+                    `${minutes}:${String(seconds).padStart(2, '0')}`;
+
+                if (reminderTimeRemaining <= 0) {
+                    clearInterval(reminderCountdownInterval);
+                }
+            }, 1000);
+        }
+
+        function playReminderSound() {
+            // Create a simple beep sound using Web Audio API
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = 800;
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.5);
+
+            // Play second beep
+            setTimeout(() => {
+                const osc2 = audioContext.createOscillator();
+                const gain2 = audioContext.createGain();
+                
+                osc2.connect(gain2);
+                gain2.connect(audioContext.destination);
+                
+                osc2.frequency.value = 1000;
+                osc2.type = 'sine';
+                
+                gain2.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gain2.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                
+                osc2.start(audioContext.currentTime);
+                osc2.stop(audioContext.currentTime + 0.5);
+            }, 600);
+        }
+
+        function showReminderModal(medicineName, time, note) {
+            document.getElementById('reminderMedicineName').textContent = medicineName;
+            document.getElementById('reminderTime').textContent = time;
+            document.getElementById('reminderNote').textContent = note;
+            document.getElementById('reminderModal').style.display = 'flex';
+
+            // Play audio alert
+            playReminderSound();
+
+            // Start countdown timer (5 minutes = 300 seconds)
+            startReminderCountdown(300);
+
+            // Browser notification if permitted
+            if ('Notification' in window && Notification.permission === 'granted') {
+                new Notification('🔔 MEDICINE REMINDER!', {
+                    body: `Time to take ${medicineName} at ${time}\n${note}`,
+                    icon: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/svgs/solid/pills.svg',
+                    tag: 'medicine-reminder',
+                    requireInteraction: true,
+                    badge: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/svgs/solid/bell.svg'
+                });
+            }
+        }
+
+        function confirmMedicineTaken() {
+            if (reminderCountdownInterval) {
+                clearInterval(reminderCountdownInterval);
+            }
+            document.getElementById('reminderModal').style.display = 'none';
+            const medicineName = document.getElementById('reminderMedicineName').textContent;
+            const reminderKey = `${medicineName}-${document.getElementById('reminderTime').textContent}`;
+            delete reminderTracking[reminderKey];
+            showNotification('✓ Success', `${medicineName} marked as taken!`, 'success');
+        }
+
+        function dismissReminder() {
+            if (reminderCountdownInterval) {
+                clearInterval(reminderCountdownInterval);
+            }
+            document.getElementById('reminderModal').style.display = 'none';
+        }
+
+        function showNotification(title, message, type = 'info') {
+            const container = document.body;
+            const notification = document.createElement('div');
+            notification.className = 'notification-toast';
+            notification.style.background = type === 'success' 
+                ? 'linear-gradient(135deg, #00ff88 0%, #00cc66 100%)' 
+                : 'linear-gradient(135deg, #ffd700 0%, #ff9500 100%)';
+            notification.innerHTML = `
+                <div class="notification-toast-title">${title}</div>
+                <div class="notification-toast-message">${message}</div>
+            `;
+            container.appendChild(notification);
+
+            setTimeout(() => {
+                notification.classList.add('removing');
+                setTimeout(() => notification.remove(), 400);
+            }, 5000);
+        }
     </script>
 </body>
 </html>
